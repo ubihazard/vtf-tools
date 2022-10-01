@@ -13,7 +13,7 @@ int main (int argc, char** argv)
 	if (argc < 4) {
 		printf("Error: two textures must be specified (got %d)\n", argc);
 usage:
-		printf("Usage: %s destination.vtf source.vtf <top,left,width,height (source rect)> <top,left (destination coords)> [alpha|both]\n", app);
+		printf("Usage: %s destination.vtf source.vtf sx,sy,sw,sh dx,dy [alpha|both]\n", app);
 		return (argc == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 	}
 
@@ -61,11 +61,7 @@ usage:
 	if (argc == 5) {
 		     if (strieq(argv[4], "alpha")) {alpha = TRUE; block_off = 16u;}
 		else if (strieq(argv[4], "both"))  {alpha = TRUE; block_off = block_size = 16u;}
-		else {
-usage:
-			printf("Usage: %s dst.vtf src.vtf dx,dy,dw,dh sx,sy [alpha | both]\n", app);
-			return EXIT_FAILURE;
-		}
+		else goto usage;
 	} else if (argc > 5) {
 		goto usage;
 	}
