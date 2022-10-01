@@ -18,5 +18,5 @@ call:build vtf72
 exit /b %errorlevel%
 
 :build
-clang++ -O2 %1.cxx -o ..\%1.exe -llib\x64\VTFLib
+clang++ -O2 %1.cxx -o ..\x64\%1.exe -llib\x64\VTFLib
 exit /b 0

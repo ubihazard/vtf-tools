@@ -56,7 +56,7 @@ int main (int argc, char** argv)
 		printf("Error: a texture, a flag pattern, and at least one modifier must be specified\n");
 usage:
 		printf("Usage: %s input.vtf <match pattern: 0xffffffff> <mod: +0x2|-0x2|/0x2 (add, remove, invert)>\n", app);
-		printf("VTF flags reference: https://developer.valvesoftware.com/wiki/Valve_Texture_Format\n", app);
+		printf("VTF flags reference: https://developer.valvesoftware.com/wiki/Valve_Texture_Format\n");
 		return (argc == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 	}
 
