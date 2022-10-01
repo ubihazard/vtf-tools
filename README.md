@@ -40,7 +40,7 @@ Download [VTFLib](https://nemstools.github.io/files/vtflib132.zip) which contain
 
 ## Using `vtfpatch`
 
-The best workflow is to use Adobe Photoshop to apply the [DXT compression fix](https://developer.valvesoftware.com/wiki/Fixing_DXT_Green_Tint_Compression), manually edit the texture, and re-export it in VTF format with all mipmaps. Then, use `vtfpatch` over the entire texture dimensions (e.g. 0,0,1024,1024) to restore the original largest mipmap from the unmodified VTF. Finally, use `vtfpatch` again to copy over only the patched region you originally were intending to “patch” in the largest mipmap. This takes quite a bit of time, but gives the best result.
+The best workflow is to use Adobe Photoshop to apply the [DXT compression fix](https://developer.valvesoftware.com/wiki/Fixing_DXT_Green_Tint_Compression), manually edit the texture, and re-export it in VTF format with all mipmaps. Then, use `vtfpatch` over the entire texture dimensions (e.g. 0,0,1023,1023) to restore the original largest mipmap from the unmodified VTF. Finally, use `vtfpatch` again to copy over only the patched region you originally were intending to “patch” in the largest mipmap. This takes quite a bit of time, but gives the best result.
 
 The much faster alternative is to use `vtfpatch` right away, and then simply `vtfzapmips` followed by `vtfgenmips` to re-generate mipmaps with patch included. However, the generated mipmaps wouldn’t carry the DXT color compression fix and would have their colors slightly off.
 
