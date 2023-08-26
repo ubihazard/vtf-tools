@@ -1,0 +1,8 @@
+workspace.code-workspace
+compile_commands.json
+.vscode/
+*.exe
+VTFCMD/
+VTFEdit/
+VTFLib/
+lib/
