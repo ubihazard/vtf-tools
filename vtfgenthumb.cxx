@@ -8,10 +8,18 @@ int main (int argc, char** argv)
 	const auto* const app = argv[0];
 	++argv, --argc;
 
+	auto force = FALSE;
+	auto regen = FALSE;
+
+	if (argc == 2) {
+		     if (strieq(argv[1], "force")) {force = TRUE; --argc;}
+		else if (strieq(argv[1], "regen")) {force = TRUE; regen = TRUE; --argc;}
+	}
+
 	if (argc != 1) {
 		printf("Error: only one texture must be specified (got %d)\n", argc);
 usage:
-		printf("Usage: %s input.vtf\n", app);
+		printf("Usage: %s input.vtf [force | regen]\n", app);
 		return (argc == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 	}
 
@@ -23,8 +31,15 @@ usage:
 	}
 
 	// Find out the thumbnail size
+	auto old_thumb_size = 0;
 	if (char(vtf.GetThumbnailFormat()) != IMAGE_FORMAT_NONE) {
-		printf("Error: \"%s\" already got thumbnail\n", argv[0]);
+		old_thumb_size = vtf.GetThumbnailDataSize();
+		if (not force) {
+			printf("Error: \"%s\" already got thumbnail\n", argv[0]);
+			return EXIT_FAILURE;
+		}
+	} else if (regen) {
+		printf("Error: \"%s\" got no thumbnail\n", argv[0]);
 		return EXIT_FAILURE;
 	}
 
@@ -57,7 +72,7 @@ usage:
 	// Drop the resource block
 	vtf_force_72(vtf, vtf_mem, true);
 	memmove((char*)vtf_mem + VTF_HDR_SIZE + thumb_size
-	, (char*)vtf_mem + VTF_HDR_SIZE
+	, (char*)vtf_mem + VTF_HDR_SIZE + old_thumb_size
 	, img_size);
 	*(int*)((char*)vtf_mem + VTF_HDR_OFF_THUMB_FMT) = IMAGE_FORMAT_DXT1;
 	*((char*)vtf_mem + VTF_HDR_OFF_THUMB_W) = width;
