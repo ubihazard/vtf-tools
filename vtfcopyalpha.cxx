@@ -64,7 +64,7 @@ usage:
 		return EXIT_FAILURE;
 	}
 	if (vtf_src.GetFrameCount() != frames) {
-		printf("Error: width mismatch (%u vs %u)\n", frames, vtf_src.GetFrameCount());
+		printf("Error: frame count mismatch (%u vs %u)\n", frames, vtf_src.GetFrameCount());
 		return EXIT_FAILURE;
 	}
 
