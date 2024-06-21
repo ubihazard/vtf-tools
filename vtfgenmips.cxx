@@ -174,10 +174,36 @@ known_sharpen_filters:
 		printf("Error: couldn't generate mipmaps for \"%s\"\n", argv[0]);
 		return EXIT_FAILURE;
 	}
-	if (!vtf.Save(argv[0])) {
-		printf("Error: couldn't save \"%s\"\n", argv[0]);
+
+	// Restore the original high resolution mipmap
+	auto const vtf_new = malloc(vtf_size_new);
+	if (vtf_new == NULL) {
+		printf("Error: out of memory\n");
 		return EXIT_FAILURE;
 	}
+	vtf.Save(vtf_new, vtf_size_new, vtf_size);
+
+	auto const mip_size = vtf.ComputeImageSize(width, height, depth, format) * frames;
+	memcpy((char*)vtf_new + vtf_size_new - mip_size
+	, (char*)vtf_mem + vtf_size_new - mip_size
+	, mip_size);
+
+	// Save new VTF
+	auto const f = fopen(argv[0], "wb");
+	if (f == NULL) {
+		printf("Error: couldn't write \"%s\"\n", argv[0]);
+		goto fail;
+	}
+	fwrite(vtf_new, 1, vtf_size_new, f);
+	fclose(f);
+
+	// Cleanup
+	free(vtf_new);
 
 	return EXIT_SUCCESS;
+
+fail:
+	free(vtf_new);
+
+	return EXIT_FAILURE;
 }
